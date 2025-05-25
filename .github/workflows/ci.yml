@@ -1,0 +1,32 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.x'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Run linter
+      run: npm run lint
+      
+    - name: Run prettier check
+      run: npm run prettier
+      
+    - name: Run tests
+      run: CI=true npm test -- --passWithNoTests
+      
+    - name: Build project
+      run: npm run build 
